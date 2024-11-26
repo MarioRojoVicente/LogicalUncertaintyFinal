@@ -210,7 +210,8 @@ class Fish:
         n_cards = self.hands[playerI][rank]
         
         # player you learns that the only possible worlds are those where I has n cards
-        self.remove_impossible_worlds(self.worlds[playerYou], lambda w: w.think[rank]==n_cards)
+        self.worlds[playerYou] = self.remove_impossible_worlds(self.worlds[playerYou], lambda w: w.think[rank]==n_cards)
+        
         # player you learns that the other player no longer has any cards in any of those worlds
         for w in self.worlds[playerYou]:
             think = list(w.think)
