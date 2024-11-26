@@ -5,7 +5,7 @@ from players.k1_probability_player import K1ProbabilityPlayer
 
 def main() -> None:
     wins = {0: 0, 1: 0}
-    rounds = 100
+    rounds = 10000
 
     for i in range(rounds):
         steps = 0
