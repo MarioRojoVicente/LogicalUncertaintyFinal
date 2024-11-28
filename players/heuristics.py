@@ -1,5 +1,21 @@
 from go_fish import GoFish
 
+
+
+#This heuristics work only with the elements on the players hand
+class GoForCloserPoint():
+
+    def evaluate(self, fish:GoFish, actions, currentPlayer):
+        max_rank = fish.hands[currentPlayer].index(0)
+        for c in range(fish.ranks):
+            if fish.hands[currentPlayer][c] != 4 and fish.hands[currentPlayer][c] > fish.hands[currentPlayer][max_rank]:
+                max_rank = c
+        for action in actions:
+            if action.rank == max_rank:
+                return action
+        raise Exception("Probelem with the rank in GoForCloserPoint heuristic")
+
+# This heuristics invilve first order knowlwdge
 class HoardingHeuristic():
     #asks for the card that is more probable the nemey has therefore trying to hoard all cards
     
@@ -7,7 +23,7 @@ class HoardingHeuristic():
         possibilities = fish.probability_of_has_ranks(fish.worlds[currentPlayer])
         return max(actions, key=lambda action: possibilities[action.rank])
     
-class MinimizeUncertaintyHeuristic():
+class Exploration():
     #asks for the card that is most uncertain if the enemy has or not therefore triying to reduce uncertainty
     
     def evaluate(self, fish:GoFish, actions, currentPlayer):
@@ -57,3 +73,5 @@ class ExplotationExplorationHeuristic():
         if best_action[1] < self.boundry:
             best_action = self.exploration(fish, actions, currentPlayer)
         return best_action[0]
+    
+#This heuristics involce second level knowledge
