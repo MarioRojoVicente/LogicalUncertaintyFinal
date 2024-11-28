@@ -2,6 +2,7 @@ from go_fish import GoFish
 from players.random_player import RandomPlayer
 from players.human_player import HumanPlayer
 from players.k1_probability_player import K1ProbabilityPlayer
+from players.heuristics import *
 
 def main() -> None:
     wins = {0: 0, 1: 0}

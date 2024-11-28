@@ -140,6 +140,9 @@ class GoFish:
             self.probability_of_knowledge(worlds, lambda w: w.think[c] > 0) 
             for c in range(self.ranks)
         ]
+    
+    def probability_of_ncards_of_ranks(self, worlds: list[WorldK1], rank:int, cuantity:int) -> list[float]:
+        return self.probability_of_knowledge(worlds, lambda w: w.think[rank] == cuantity) 
 
     # Go through all impossible worlds
     # remove all the worlds that do not satisfy the condition
