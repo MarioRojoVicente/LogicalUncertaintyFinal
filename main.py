@@ -4,10 +4,13 @@ from players.human_player import HumanPlayer
 from players.k1_probability_player import K1ProbabilityPlayer
 from players.heuristics import *
 
-ROUNDS = 100
+ROUNDS = 1000
 
 heuristics = [RandomHeuristic(), GoForCloserPointHeuristic(), HoardingHeuristic(), FinishFastHeuristic(), ExplorationHeuristic(), ExplotationExplorationHeuristic() ]
 heuristicsTags = ["Random", "GoForCloserPoint", "Hoarding", "FinishFast", "Exploration", "ExplotationExploration"]
+
+offset = 4
+everyNth = 5
 
 benchmarks = [[0,0,0,0,0,0],
               [0,0,0,0,0,0],
@@ -33,7 +36,7 @@ def main(h1=0, h2=0) -> None:
             steps += 1
 
         wins[game.winner()] += 1
-        print(f"Round {i}: {wins} - {game.winner()} won the game in {steps} steps!")
+        print(f"Round {i}: {wins} - {game.winner()} ({heuristicsTags[h1]} vs {heuristicsTags[h2]}) won the game in {steps} steps!")
 
     print(f"Final ({rounds} rounds): {wins}")
     benchmarks[h1][h2] = round(wins[0]/ROUNDS, 2)
@@ -41,17 +44,19 @@ def main(h1=0, h2=0) -> None:
 
 
 if __name__ == "__main__":
-    """for h1 in range(0, len(heuristicsTags)):
+    for h1 in range(0, len(heuristicsTags)):
         for h2 in range(h1, len(heuristicsTags)):
             if h1 != h2:
-                main(h1, h2)
+                offset += 1
+                if offset % everyNth == 0:
+                    main(h1, h2)
     print("In", ROUNDS , "games probability of row winiing against column")
     print(heuristicsTags)
     idx = 0
     for row in benchmarks:
         print(row, heuristicsTags[idx])
-        idx = idx + 1"""
-    main(1, 5)
+        idx = idx + 1
+    # main(1, 5)
 
 
 #in 100 games probability of row winiing against column
