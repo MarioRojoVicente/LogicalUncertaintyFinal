@@ -24,6 +24,7 @@ class GoFish:
 
     # We keep the player beliefs separate
     worlds: list[list[WorldK1]]
+
     # These are the real hands of the players. Each player knows their own hand
     hands: list[list[int]]
 
@@ -95,8 +96,8 @@ class GoFish:
         # update the real world
         self.hands[player_you][rank] += self.hands[player_i][rank]
         self.hands[player_i][rank] = 0
-        
-    # Should read as I draw a card
+    
+    # Should be read as I draws a card
     def draw(self, player_i, player_you) -> None:
         previous_deck_card_count = len(self.deck)
         new_card = self.deck.pop()
@@ -185,7 +186,7 @@ class GoFish:
 
         actions = self.possible_actions(player_i)
         if len(actions) == 0:
-            l.debug("Go fish! (forced action)")
+            l.info("Go fish! (forced action)")
             self.fish_card(player_i, player_you)
             return
         
@@ -200,7 +201,7 @@ class GoFish:
                 l.info("Go fish!")
                 self.fish_card(player_i, player_you)
             else:
-                # should be impossible with 2 players
+                # Should be impossible with 2 players
                 l.info("Go fish! (but there were no more cards)")
 
     def is_over(self) -> bool:
@@ -217,11 +218,10 @@ class GoFish:
         return deck
 
     def log_state(self) -> None:
-
         player_text = [
             f"Player {p} has "
             + ", ".join(f"{c}: {self.hands[p][c]}" for c in range(self.ranks))
-            for p in range(len(self.hands))
+            for p in players
         ]
         player_text[self.turn] += " (current turn)"
 
