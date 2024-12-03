@@ -51,10 +51,14 @@ class GoFish:
             for _ in range(initial_hand_size):
                 self.draw(p, opponent[p])
 
+    def count_ranks(self, ranks):
+        return sum([1 for rank in ranks if rank > 0 and rank < 4])
+    
+
     def ask(self, rank: int, player_i: int, player_you: int) -> bool:
-        # you learn that I have at least one of the given rank
+        # you learn that I have at least one of the given rank (Assume that their strategi is random)
         self.worlds[player_you] = self.remove_impossible_worlds(
-            self.worlds[player_you], lambda w: w.think[rank] > 0
+            self.worlds[player_you], lambda w: (1.0/self.count_ranks(w.think)) if w.think[rank] > 0 and w.think[rank] < 4 else 0
         )
 
         if self.hands[player_you][rank] > 0:
@@ -148,14 +152,20 @@ class GoFish:
     # remove all the worlds that do not satisfy the condition
     # and redistribute the probability to all other worlds
     def remove_impossible_worlds(
-        self, worlds: list[T], condition: Callable[[T], bool]
+        self, worlds: list[T], condition: Callable[[T], bool|float]
     ) -> list[T]:
         total_probability = 0
         worlds_to_keep = []
 
         # Find all legal worlds
         for world in worlds:
-            if condition(world):
+            pre_w = condition(world)
+            
+            if type(pre_w) == type(1.0):
+                world.p *= pre_w
+                pre_w = pre_w > 0
+                
+            if pre_w == True:
                 worlds_to_keep.append(world)
                 total_probability += world.p
 
